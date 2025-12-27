@@ -21,19 +21,11 @@ variable "company_id" {
 variable "region" {
   description = "Region to deploy the Terraform state S3 bucket."
   type        = string
-
-  default = "us-east-1"
 }
 
 variable "environments" {
   description = "Environments to setup, the key is the environment in kebab-case, the value is the environment in CamelCase."
   type        = map(string)
-
-  default = {
-    "prod"    = "Prod",
-    "staging" = "Staging",
-    "shared-services" : "SharedServices"
-  }
 
   validation {
     condition     = length(var.environments) >= 1

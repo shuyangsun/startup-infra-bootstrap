@@ -1,4 +1,18 @@
 %YAML 1.2
 ---
 # Startup configuration
-company: MyCompany # Must be CamelCase
+
+# Name of the company in CamelCase
+company_name: MyCompany
+
+# Company ID in kebab-case
+company_id: my-company
+
+# Region to deploy the Terraform state S3 bucket
+region: us-east-1
+
+# Environments in kebab-case
+environments:
+  - prod
+  - staging
+  - shared-services
