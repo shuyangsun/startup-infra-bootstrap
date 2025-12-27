@@ -14,8 +14,8 @@ DEP_ERR_EXIT=1
 ## 1.1 Package Managers
 
 if [[ "$(uname)" = "Darwin" ]]; then
-    # Check Homebrew installation if on macOS.
-    "$SCRIPT_DIR/internal/check_dependencies/check_brew.sh" || exit ${DEP_ERR_EXIT}
+  # Check Homebrew installation if on macOS.
+  "$SCRIPT_DIR/internal/check_dependencies/check_brew.sh" || exit ${DEP_ERR_EXIT}
 fi
 
 ## 1.2 Other Dependencies

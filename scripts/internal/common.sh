@@ -12,11 +12,11 @@ CROSS="${RED}✗${NC}"
 
 # Helper functions
 success() {
-    echo -e "${CHECK} $1"
+  echo -e "${CHECK} $1"
 }
 
 error() {
-    echo -e "${CROSS} $1"
+  echo -e "${CROSS} $1"
 }
 
 # Check if actual version is greater than or equal to required version.
@@ -27,7 +27,7 @@ error() {
 # Returns:
 #   0 if actual >= required, 1 otherwise
 version_gte() {
-    local required="$1"
-    local actual="$2"
-    [ "$(printf '%s\n' "$required" "$actual" | sort -V | head -n1)" = "$required" ]
+  local required="$1"
+  local actual="$2"
+  [ "$(printf '%s\n' "$required" "$actual" | sort -V | head -n1)" = "$required" ]
 }
