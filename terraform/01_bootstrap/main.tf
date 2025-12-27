@@ -83,3 +83,41 @@ resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
     prevent_destroy = true
   }
 }
+
+resource "aws_iam_policy" "state_bucket_readonly" {
+  for_each    = local.env_mapping
+  name        = each.value.readonly_policy_name
+  path        = "/terraform/readonly/"
+  description = "Read-only access to Terraform state in the \"${each.key}\" environment."
+
+  policy = jsonencode({
+    Version = local.iam_policy_version
+    Statement = [
+      {
+        Sid      = "S3BucketReadOnly"
+        Effect   = "Allow"
+        Action   = local.readonly_actions
+        Resource = aws_s3_bucket.state_bucket[each.key].arn
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "state_bucket_readwrite" {
+  for_each    = local.env_mapping
+  name        = each.value.rw_policy_name
+  path        = "/terraform/readwrite/"
+  description = "Read and write access to Terraform state in the \"${each.key}\" environment."
+
+  policy = jsonencode({
+    Version = local.iam_policy_version
+    Statement = [
+      {
+        Sid      = "S3BucketReadWrite"
+        Effect   = "Allow"
+        Action   = local.readwrite_actions
+        Resource = aws_s3_bucket.state_bucket[each.key].arn
+      },
+    ]
+  })
+}
