@@ -1,14 +1,16 @@
 #!/bin/bash
 # Setup new startup cloud infrastructure.
 
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+DEPENDENCY_ERROR_CODE=1
+
 # ==============================================================================
 # 1. Check Dependencies
 # ==============================================================================
 
-# 1.1 Check Terraform Installation
-
-# TODO: Check `terraform -version`, make sure it's 1.14.3 or above.
-
-# 1.2 Check AWS CLI Installation
-
-# TODO: check AWS CLI installation, and the current caller is already configured.
+"$SCRIPT_DIR/internal/check_dependencies/check_git.sh" || exit ${DEPENDENCY_ERROR_CODE}
+"$SCRIPT_DIR/internal/check_dependencies/check_terraform.sh" || exit ${DEPENDENCY_ERROR_CODE}
+"$SCRIPT_DIR/internal/check_dependencies/check_aws.sh" || exit ${DEPENDENCY_ERROR_CODE}
