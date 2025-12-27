@@ -1,15 +1,24 @@
-# Startup Setup for Non-Technical People
+# [new.startup](https://new.startup)
 
-Set up the foundational infrastructure to bootstrap the rest of your cloud
-environment for your exciting new startup.
+Creates everything you need for your exciting new startup, no coding experience
+required.
 
 ## Getting Started
 
-Install [Git](https://git-scm.com/downloads/), then run the following commands
-in your terminal:
+```bash
+NEW_STARTUP_DIR="~/code/${USER}-new-startup" \
+  && mkdir -p ${NEW_STARTUP_DIR} \
+  && git clone https://github.com/shuyangsun/new-startup.git ${NEW_STARTUP_DIR} \
+  && cd ${NEW_STARTUP_DIR} \
+  && ./scripts/start.sh
+```
+
+## Contribution Guide
+
+### Install Dependencies
 
 ```bash
-git clone https://github.com/shuyangsun/startup-infra-bootstrap.git
-cd ./startup-infra-bootstrap
-./scripts/setup.sh
+git clone git@github.com:shuyangsun/new-startup.git \
+  && cd ./new-startup \
+  && ./scripts/internal/development/setup_dev.sh
 ```
