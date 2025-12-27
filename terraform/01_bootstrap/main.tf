@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "state_bucket" {
   }
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_s3_bucket_versioning" "enable_versioning" {
   }
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_kms_key" "bucket_encryption_key" {
   }
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
   }
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
@@ -80,6 +80,6 @@ resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
   restrict_public_buckets = true
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
