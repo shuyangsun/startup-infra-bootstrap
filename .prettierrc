@@ -34,7 +34,6 @@
         "binaryNextLine": true,
         "switchCaseIndent": true,
         "spaceRedirects": true,
-        "keepPadding": false,
         "minify": false,
         "functionNextLine": false
       }
