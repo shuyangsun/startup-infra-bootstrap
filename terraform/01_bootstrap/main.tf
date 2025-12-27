@@ -25,7 +25,7 @@ locals {
   }
 }
 
-resource "aws_s3_bucket" "tf_state" {
+resource "aws_s3_bucket" "state_bucket" {
   for_each = local.env_mapping
   bucket   = each.value.bucket
 
@@ -38,9 +38,9 @@ resource "aws_s3_bucket" "tf_state" {
   }
 }
 
-resource "aws_s3_bucket_versioning" "enabled" {
+resource "aws_s3_bucket_versioning" "enable_versioning" {
   for_each = local.env_mapping
-  bucket   = aws_s3_bucket.tf_state[each.key].id
+  bucket   = aws_s3_bucket.state_bucket[each.key].id
   versioning_configuration {
     status = "Enabled"
   }
@@ -50,10 +50,11 @@ resource "aws_s3_bucket_versioning" "enabled" {
   }
 }
 
-resource "aws_kms_key" "state_bucket" {
+resource "aws_kms_key" "bucket_encryption_key" {
   for_each                = local.env_mapping
   description             = each.value.kms_key_description
   deletion_window_in_days = 10
+  enable_key_rotation     = true
 
   tags = {
     Name = each.value.kms_key_name
@@ -64,15 +65,16 @@ resource "aws_kms_key" "state_bucket" {
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption" {
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption_config" {
   for_each = local.env_mapping
-  bucket   = aws_s3_bucket.tf_state[each.key].id
+  bucket   = aws_s3_bucket.state_bucket[each.key].id
 
   rule {
     apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.state_bucket[each.key].arn
-      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.bucket_encryption_key[each.key].arn
+      sse_algorithm     = each.value.is_prod ? "aws:kms:dsse" : "aws:kms"
     }
+    bucket_key_enabled = true
   }
 
   lifecycle {
@@ -82,7 +84,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
 
 resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
   for_each = local.env_mapping
-  bucket   = aws_s3_bucket.tf_state[each.key].id
+  bucket   = aws_s3_bucket.state_bucket[each.key].id
 
   block_public_acls       = true
   block_public_policy     = true
