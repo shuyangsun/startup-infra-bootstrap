@@ -64,7 +64,10 @@
                 "iam:DeletePolicyVersion",
                 "iam:DeletePolicy"
             ],
-            "Resource": ["arn:aws:iam::*:policy/terraform/TerraformState*"]
+            "Resource": [
+                "arn:aws:iam::*:policy/terraform/readonly/TerraformState*ReadOnly",
+                "arn:aws:iam::*:policy/terraform/readwrite/TerraformState*ReadWrite"
+            ]
         }
     ]
 }

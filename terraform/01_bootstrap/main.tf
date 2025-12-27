@@ -94,10 +94,13 @@ resource "aws_iam_policy" "state_bucket_readonly" {
     Version = local.iam_policy_version
     Statement = [
       {
-        Sid      = "S3BucketReadOnly"
-        Effect   = "Allow"
-        Action   = local.readonly_actions
-        Resource = aws_s3_bucket.state_bucket[each.key].arn
+        Sid    = "S3BucketReadOnly"
+        Effect = "Allow"
+        Action = local.readonly_actions
+        Resource = [
+          aws_s3_bucket.state_bucket[each.key].arn,
+          "${aws_s3_bucket.state_bucket[each.key].arn}/*"
+        ]
       },
     ]
   })
@@ -113,10 +116,13 @@ resource "aws_iam_policy" "state_bucket_readwrite" {
     Version = local.iam_policy_version
     Statement = [
       {
-        Sid      = "S3BucketReadWrite"
-        Effect   = "Allow"
-        Action   = local.readwrite_actions
-        Resource = aws_s3_bucket.state_bucket[each.key].arn
+        Sid    = "S3BucketReadWrite"
+        Effect = "Allow"
+        Action = local.readwrite_actions
+        Resource = [
+          aws_s3_bucket.state_bucket[each.key].arn,
+          "${aws_s3_bucket.state_bucket[each.key].arn}/*"
+        ]
       },
     ]
   })
